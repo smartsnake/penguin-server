@@ -1,17 +1,18 @@
 version: "3.7"
 services:
-  # plex:
-  #   image: lscr.io/linuxserver/plex:latest
-  #   container_name: plex
-  #   network_mode: host
-  #   environment:
-  #     - PUID=1000
-  #     - PGID=1000
-  #     - TZ=Etc/UTC
-  #     - VERSION=docker
-  #   volumes:
-  #     - /Media_Data/Plex_Data:/media
-  #   restart: unless-stopped
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - VERSION=docker
+    volumes:
+      - /Media_Data/Plex_Data:/media
+      - /Media_Data/Plex:/config
+    restart: unless-stopped
   sonarr:
     container_name: sonarr
     image: cr.hotio.dev/hotio/sonarr
@@ -50,6 +51,7 @@ services:
       - TZ=Etc/UTC
     volumes:
       - /Media_Data/Jackett:/config
+    restart: unless-stopped
   transmission:
       cap_add:
           - NET_ADMIN
@@ -99,23 +101,24 @@ services:
     volumes:
       - /Media_Data/Bazarr:/config
       - /Media_Data:/Media_Data
-  openvpn-as:
-    image: ghcr.io/linuxserver/openvpn-as
-    container_name: openvpn-as
-    cap_add:
-      - NET_ADMIN
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/London
-      - INTERFACE=eth0 #optional
-    volumes:
-      - ./:/config
-    ports:
-      - 943:943
-      - 9443:9443
-      - 1194:1194/udp
     restart: unless-stopped
+  # openvpn-as:
+  #   image: ghcr.io/linuxserver/openvpn-as
+  #   container_name: openvpn-as
+  #   cap_add:
+  #     - NET_ADMIN
+  #   environment:
+  #     - PUID=1000
+  #     - PGID=1000
+  #     - TZ=Europe/London
+  #     - INTERFACE=eth0 #optional
+  #   volumes:
+  #     - ./:/config
+  #   ports:
+  #     - 943:943
+  #     - 9443:9443
+  #     - 1194:1194/udp
+  #   restart: unless-stopped
   # pihole:
   #   container_name: pihole
   #   image: pihole/pihole:latest
